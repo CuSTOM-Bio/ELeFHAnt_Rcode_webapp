@@ -239,7 +239,6 @@ LabelHarmonization <- function(seurat.objects = c(), perform_integration = TRUE,
         HarmonizedLabels_UsingRF <- as.character(rf_celltype_pred[match(integrated.atlas$seurat_clusters, rf_celltype_pred$seurat_clusters), "HarmonizedLabels_UsingRF"])
         integrated.atlas[["HarmonizedLabels_UsingRF"]] <- HarmonizedLabels_UsingRF
         message ("Added Harmonized Labels using randomForest to integrated object")
-        write.table(rf_cm, "ConfusionMatrix_RandomForest.txt", quote=F, sep="\t")
         if(validatePredictions == TRUE)
         {
             message("randomForest based learning and harmonization completed. Starting validation of celltype assignments using GSEA")
@@ -282,7 +281,6 @@ LabelHarmonization <- function(seurat.objects = c(), perform_integration = TRUE,
         HarmonizedLabels_UsingSVM <- as.character(svm_celltype_pred[match(integrated.atlas$seurat_clusters, svm_celltype_pred$seurat_clusters), "HarmonizedLabels_UsingSVM"])
         integrated.atlas[["HarmonizedLabels_UsingSVM"]] <- HarmonizedLabels_UsingSVM
         message ("Added harmonized labels using SVM to integrated object")
-        write.table(svm_cm, "ConfusionMatrix_SVM.txt", quote=F, sep="\t")
         if(validatePredictions == TRUE)
         {
             message ("SVM based learning and harmonization completed. Starting validation of celltype assignments using GSEA")
@@ -326,7 +324,6 @@ LabelHarmonization <- function(seurat.objects = c(), perform_integration = TRUE,
         HarmonizedLabels_UsingRF <- as.character(rf_celltype_pred[match(integrated.atlas$seurat_clusters, rf_celltype_pred$seurat_clusters), "HarmonizedLabels_UsingRF"])
         integrated.atlas[["HarmonizedLabels_UsingRF"]] <- HarmonizedLabels_UsingRF
         message ("Added Harmonized Labels using randomForest to integrated object")
-        write.table(rf_cm, "ConfusionMatrix_RandomForest.txt", quote=F, sep="\t")
         
         message ("Setting up SVM classifier learning")
         message ("Training SVM classifier")
@@ -350,7 +347,6 @@ LabelHarmonization <- function(seurat.objects = c(), perform_integration = TRUE,
         HarmonizedLabels_UsingSVM <- as.character(svm_celltype_pred[match(integrated.atlas$seurat_clusters, svm_celltype_pred$seurat_clusters), "HarmonizedLabels_UsingSVM"])
         integrated.atlas[["HarmonizedLabels_UsingSVM"]] <- HarmonizedLabels_UsingSVM
         message ("Added harmonized labels using SVM to integrated object")
-        write.table(svm_cm, "ConfusionMatrix_SVM.txt", quote=F, sep="\t")
 
         message ("randomForest and SVM based learning and harmonization completed. Using predictions from all models for Ensemble harmonization")
 
@@ -361,7 +357,6 @@ LabelHarmonization <- function(seurat.objects = c(), perform_integration = TRUE,
         HarmonizedLabels_UsingEnsemble <- as.character(consensus_celltype_pred[match(integrated.atlas$seurat_clusters, consensus_celltype_pred$seurat_clusters), "HarmonizedLabels_UsingEnsemble"])
         integrated.atlas[["HarmonizedLabels_UsingEnsemble"]] <- HarmonizedLabels_UsingEnsemble
         message ("Added Harmonized labels using Ensemble learning to query")
-        write.table(consensus_cm, "ConfusionMatrix_EnsembleLearning.txt", quote=F, sep="\t")
         if(validatePredictions == TRUE)
         {
             message ("Ensembl harmonization completed. Starting validation of celltype assignments using GSEA")
@@ -485,7 +480,6 @@ DeduceRelationship <- function(reference1 = NULL, reference2 = NULL, downsample 
     
     message ("Generating confusion matrix and heatmap")
     rf_cm <- rf_cm.1
-    write.table(rf_cm, "ConfusionMatrix_RandomForest.txt", quote=F, sep="\t")
     row_order <- hclust(dist(rf_cm))$order
     col_order <- hclust(dist(t(rf_cm)))$order
     rf_cm <- rf_cm[match(rownames(rf_cm)[row_order], rownames(rf_cm)),match(colnames(rf_cm)[col_order], colnames(rf_cm))]
@@ -518,7 +512,6 @@ DeduceRelationship <- function(reference1 = NULL, reference2 = NULL, downsample 
     
     message ("Generating confusion matrix and heatmap")
     svm_cm <- svm_cm.1
-    write.table(svm_cm, "ConfusionMatrix_SVM.txt", quote=F, sep="\t")
     row_order <- hclust(dist(svm_cm))$order
     col_order <- hclust(dist(t(svm_cm)))$order
     svm_cm <- svm_cm[match(rownames(svm_cm)[row_order], rownames(svm_cm)),match(colnames(svm_cm)[col_order], colnames(svm_cm))]
@@ -552,7 +545,6 @@ DeduceRelationship <- function(reference1 = NULL, reference2 = NULL, downsample 
     
     message ("Generating confusion matrix and heatmap")
     rf_cm <- rf_cm.1
-    write.table(rf_cm, "ConfusionMatrix_RandomForest.txt", quote=F, sep="\t")
     row_order <- hclust(dist(rf_cm))$order
     col_order <- hclust(dist(t(rf_cm)))$order
     rf_cm <- rf_cm[match(rownames(rf_cm)[row_order], rownames(rf_cm)),match(colnames(rf_cm)[col_order], colnames(rf_cm))]
@@ -580,7 +572,6 @@ DeduceRelationship <- function(reference1 = NULL, reference2 = NULL, downsample 
     
     message ("Generating confusion matrix and heatmap")
     svm_cm <- svm_cm.1
-    write.table(svm_cm, "ConfusionMatrix_SVM.txt", quote=F, sep="\t")
     row_order <- hclust(dist(svm_cm))$order
     col_order <- hclust(dist(t(svm_cm)))$order
     svm_cm <- svm_cm[match(rownames(svm_cm)[row_order], rownames(svm_cm)),match(colnames(svm_cm)[col_order], colnames(svm_cm))]
@@ -595,7 +586,6 @@ DeduceRelationship <- function(reference1 = NULL, reference2 = NULL, downsample 
     
     message ("Generating confusion matrix and heatmap")
     consensus_cm = rf_cm/max(rf_cm) + svm_cm/max(svm_cm)
-    write.table(consensus_cm, "ConfusionMatrix_EnsembleLearning.txt", quote=F, sep="\t")
     row_order <- hclust(dist(consensus_cm))$order
     col_order <- hclust(dist(t(consensus_cm)))$order
     consensus_cm <- consensus_cm[match(rownames(consensus_cm)[row_order], rownames(consensus_cm)),match(colnames(consensus_cm)[col_order], colnames(consensus_cm))]
@@ -643,7 +633,6 @@ ValidatePredictions <- function(reference = NULL, query = NULL) {
     message ("Obtaining markers per celltype")
     celltype_markers <- FindAllMarkers(reference)
     top_celltype <- celltype_markers %>% group_by(cluster) %>% slice(1:100)
-    write.table(top_celltype, "temp.R.txt", quote = F, sep = "\t")
     top_celltype <- read.table('temp.R.txt', sep = "\t", header = T)
     message ("Generating Gene sets using top 100 markers per celltype from reference")
     fgsea_sets <- top_celltype %>% split(x = .$gene, f = .$cluster)
@@ -653,7 +642,6 @@ ValidatePredictions <- function(reference = NULL, query = NULL) {
     Idents(query) <- query$seurat_clusters
     cluster_markers <- FindAllMarkers(query)
     top_cluster <- cluster_markers %>% group_by(cluster) %>% slice(1:100)
-    write.table(top_cluster, "temp.R.1.txt", quote = F, sep = "\t")
     top_cluster <- read.table('temp.R.1.txt', sep = "\t", header = T)
 
     message ("Performing Gene Set Enrichment Analysis (GSEA) using gene sets from reference and top 100 markers per cluster in query")
@@ -685,8 +673,6 @@ ValidatePredictions <- function(reference = NULL, query = NULL) {
     }
     gsea.res.return <- data.frame(gsea.res.return)
     gsea.res.return <- apply(gsea.res.return,2,as.character)
-    unlink("temp.R.txt")
-    unlink("temp.R.1.txt")
     return(gsea.res.return)
 }
 
@@ -772,7 +758,6 @@ ApproximationBasedCelltypeAssignment <- function(reference = reference, query = 
         PredictedCelltype_UsingRF <- as.character(rf_celltype_pred[match(query$seurat_clusters, rf_celltype_pred$seurat_clusters), "PredictedCelltype_UsingRF"])
         query[["PredictedCelltype_UsingRF"]] <- PredictedCelltype_UsingRF
         message ("Added Predicted celltypes using randomForest to query")
-        write.table(rf_cm, "ConfusionMatrix_RandomForest.txt", quote=F, sep="\t")
         if(validatePredictions == TRUE)
         {
             message("randomForest based learning and celltype annotation completed. Starting validation of celltype assignments using GSEA")
@@ -814,7 +799,6 @@ ApproximationBasedCelltypeAssignment <- function(reference = reference, query = 
         PredictedCelltype_UsingSVM <- as.character(svm_celltype_pred[match(query$seurat_clusters, svm_celltype_pred$seurat_clusters), "PredictedCelltype_UsingSVM"])
         query[["PredictedCelltype_UsingSVM"]] <- PredictedCelltype_UsingSVM
         message ("Added Predicted celltypes using SVM to query")
-        write.table(svm_cm, "ConfusionMatrix_SVM.txt", quote=F, sep="\t")
         if(validatePredictions == TRUE)
         {
             message("SVM based learning and celltype annotation completed. Starting validation of celltype assignments using GSEA")
@@ -856,7 +840,6 @@ ApproximationBasedCelltypeAssignment <- function(reference = reference, query = 
         PredictedCelltype_UsingRF <- as.character(rf_celltype_pred[match(query$seurat_clusters, rf_celltype_pred$seurat_clusters), "PredictedCelltype_UsingRF"])
         query[["PredictedCelltype_UsingRF"]] <- PredictedCelltype_UsingRF
         message ("Added Predicted celltypes using randomForest to query")
-        write.table(rf_cm, "ConfusionMatrix_RandomForest.txt", quote=F, sep="\t")
         
         message ("Setting up SVM classifier learning")
         message ("Training SVM classifier")
@@ -880,7 +863,6 @@ ApproximationBasedCelltypeAssignment <- function(reference = reference, query = 
         PredictedCelltype_UsingSVM <- as.character(svm_celltype_pred[match(query$seurat_clusters, svm_celltype_pred$seurat_clusters), "PredictedCelltype_UsingSVM"])
         query[["PredictedCelltype_UsingSVM"]] <- PredictedCelltype_UsingSVM
         message ("Added Predicted celltypes using SVM to query")
-        write.table(svm_cm, "ConfusionMatrix_SVM.txt", quote=F, sep="\t")
 
         message ("randomForest and SVM based learning and predictions completed. Using predictions from RF and SVM to make Ensemble Predictions")
 
@@ -890,7 +872,6 @@ ApproximationBasedCelltypeAssignment <- function(reference = reference, query = 
         PredictedCelltype_UsingEnsemble <- as.character(consensus_celltype_pred[match(query$seurat_clusters, consensus_celltype_pred$seurat_clusters), "PredictedCelltype_UsingEnsemble"])
         query[["PredictedCelltype_UsingEnsemble"]] <- PredictedCelltype_UsingEnsemble
         message ("Added Predicted celltypes using Ensemble learning to query")
-        write.table(consensus_cm, "ConfusionMatrix_EnsembleLearning.txt", quote=F, sep="\t")
         if(validatePredictions == TRUE)
         {
             message("Ensembl celltype annotation completed. Starting validation of celltype assignments using GSEA")
